@@ -3,92 +3,99 @@
 #include <string>
 using namespace std;
 
-struct Recordatorio {
-    string descripcion;
+// Estructura para almacenar un experimento
+struct Experimento {
+    string nombre;
     string fecha;
-    string hora;
+    string descripcion;
 
-    Recordatorio(string desc, string f, string h) 
-        : descripcion(desc), fecha(f), hora(h) {}
+    Experimento(string n, string f, string d) 
+        : nombre(n), fecha(f), descripcion(d) {}
 };
 
-void agregarRecordatorio(vector<Recordatorio>& recordatorios) {
-    string descripcion, fecha, hora;
-    cout << "Ingresa la descripcion del recordatorio: ";
+// Función para agregar un experimento
+void agregarExperimento(vector<Experimento>& experimentos) {
+    string nombre, fecha, descripcion;
+    cout << "Ingresa el nombre del experimento: ";
+    cin.ignore(); // Limpiar el buffer
+    getline(cin, nombre);
+    cout << "Ingresa la fecha del experimento (YYYY-MM-DD): ";
+    cin >> fecha;
+    cout << "Ingresa la descripcion del experimento: ";
     cin.ignore(); // Limpiar el buffer
     getline(cin, descripcion);
-    cout << "Ingresa la fecha del recordatorio (YYYY-MM-DD): ";
-    cin >> fecha;
-    cout << "Ingresa la hora del recordatorio (HH:MM): ";
-    cin >> hora;
-    recordatorios.push_back(Recordatorio(descripcion, fecha, hora));
-    cout << "Recordatorio agregado." << endl;
+    experimentos.push_back(Experimento(nombre, fecha, descripcion));
+    cout << "Experimento agregado." << endl;
 }
 
-void listarRecordatorios(const vector<Recordatorio>& recordatorios) {
-    cout << "Recordatorios programados:" << endl;
-    for (size_t i = 0; i < recordatorios.size(); i++) {
-        cout << (i + 1) << ". " << recordatorios[i].descripcion 
-             << " - " << recordatorios[i].fecha << " a las " << recordatorios[i].hora << endl;
+// Función para listar todos los experimentos
+void listarExperimentos(const vector<Experimento>& experimentos) {
+    cout << "Experimentos registrados:" << endl;
+    for (size_t i = 0; i < experimentos.size(); i++) {
+        cout << (i + 1) << ". " << experimentos[i].nombre 
+             << " - " << experimentos[i].fecha << ": " << experimentos[i].descripcion << endl;
     }
 }
 
-void buscarRecordatoriosPorFecha(const vector<Recordatorio>& recordatorios, const string& fecha) {
-    cout << "Recordatorios programados para " << fecha << ":" << endl;
+// Función para buscar experimentos por fecha
+void buscarExperimentosPorFecha(const vector<Experimento>& experimentos, const string& fecha) {
+    cout << "Experimentos registrados para " << fecha << ":" << endl;
     bool found = false;
-    for (size_t i = 0; i < recordatorios.size(); i++) {
-        if (recordatorios[i].fecha == fecha) {
-            cout << recordatorios[i].descripcion << " a las " << recordatorios[i].hora << endl;
+    for (size_t i = 0; i < experimentos.size(); i++) {
+        if (experimentos[i].fecha == fecha) {
+            cout << experimentos[i].nombre << ": " << experimentos[i].descripcion << endl;
             found = true;
         }
     }
     if (!found) {
-        cout << "No hay recordatorios para " << fecha << "." << endl;
+        cout << "No hay experimentos para " << fecha << "." << endl;
     }
 }
 
-void eliminarRecordatorio(vector<Recordatorio>& recordatorios, int index) {
-    if (index >= 0 && index < recordatorios.size()) {
-        recordatorios.erase(recordatorios.begin() + index);
-        cout << "Recordatorio eliminado." << endl;
+// Función para eliminar un experimento
+void eliminarExperimento(vector<Experimento>& experimentos, int index) {
+    if (index >= 0 && index < experimentos.size()) {
+        experimentos.erase(experimentos.begin() + index);
+        cout << "Experimento eliminado." << endl;
     } else {
         cout << "Indice no valido." << endl;
     }
 }
 
+// Función principal
 int main() {
-    vector<Recordatorio> recordatorios;
+    vector<Experimento> experimentos;
     int opcion;
 
     do {
-        cout << "\nSistema de Gestion de Recordatorios\n";
-        cout << "1. Agregar Recordatorio\n";
-        cout << "2. Listar Recordatorios\n";
-        cout << "3. Buscar Recordatorios por Fecha\n";
-        cout << "4. Eliminar Recordatorio\n";
+        cout << "\nSistema de Gestion de Experimentos\n";
+        cout << "1. Agregar Experimento\n";
+        cout << "2. Listar Experimentos\n";
+        cout << "3. Buscar Experimentos por Fecha\n";
+        cout << "4. Eliminar Experimento\n";
         cout << "5. Salir\n";
         cout << "Selecciona una opcion: ";
         cin >> opcion;
 
         switch (opcion) {
             case 1:
-                agregarRecordatorio(recordatorios);
+                agregarExperimento(experimentos);
                 break;
             case 2:
-                listarRecordatorios(recordatorios);
+                listarExperimentos(experimentos);
                 break;
             case 3: {
                 string fecha;
-                cout << "Ingresa la fecha para buscar recordatorios: ";
+                cout << "Ingresa la fecha para buscar experimentos: ";
                 cin >> fecha;
-                buscarRecordatoriosPorFecha(recordatorios, fecha);
+                buscarExperimentosPorFecha(experimentos, fecha);
                 break;
             }
             case 4: {
                 int index;
-                cout << "Ingresa el numero del recordatorio a eliminar: ";
+                cout << "Ingresa el numero del experimento a eliminar: ";
                 cin >> index;
-                eliminarRecordatorio(recordatorios, index - 1); // Ajustar a indice 0
+                eliminarExperimento(experimentos, index - 1); // Ajustar a indice 0
                 break;
             }
             case 5:
